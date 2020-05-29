@@ -244,6 +244,30 @@ module.factory('ComponentUtils', function() {
         }
     }
 
+    utils.convertAllMapValuesToList = function(properties, config) {
+        if (!properties) {
+            return;
+        }
+
+        for (var i=0 ; i<properties.length ; i++) {
+            var prop = properties[i];
+            if (prop.type === 'Map') {
+                var configProperty = config[prop.name];
+
+                if (configProperty == null || configProperty === '') {
+                    configProperty = [];
+                    config[prop.name] = configProperty;
+                }
+
+                if (typeof configProperty === "string") {
+                    configProperty = configProperty.split("##");
+                    config[prop.name] = configProperty;
+                }
+            }
+        }
+    }
+
+
     utils.convertAllListValuesToMultivaluedString = function(properties, config) {
         if (!properties) {
             return;

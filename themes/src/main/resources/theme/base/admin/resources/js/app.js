@@ -2804,7 +2804,11 @@ module.controller('ProviderConfigCtrl', function ($modal, $scope, $route, Compon
         }
     };
 
+    //$scope.properties.filter(it => it.type === 'Map').map(it => it.name).forEach(it => delete $scope.config[it]);
+
     ComponentUtils.convertAllMultivaluedStringValuesToList($scope.properties, $scope.config);
+
+    ComponentUtils.convertAllMapValuesToList($scope.properties, $scope.config);
 
     ComponentUtils.addLastEmptyValueToMultivaluedLists($scope.properties, $scope.config);
 
@@ -2839,7 +2843,7 @@ module.controller('ProviderConfigCtrl', function ($modal, $scope, $route, Compon
 
         var parsedMap = JSON.parse($scope.config[optionName]);
         parsedMap.push($scope.newMapEntries[optionName]);
-        $scope.config[optionName] = JSON.stringify(parsedMap);
+        $scope.config[optionName] = [JSON.stringify(parsedMap)];
 
         delete $scope.newMapEntries[optionName];
     }
@@ -2878,7 +2882,7 @@ module.controller('ProviderConfigCtrl', function ($modal, $scope, $route, Compon
             if(!$scope.config.hasOwnProperty(optionName)){
                 $scope.config[optionName]=cachedMaps[optionName];
             } else {
-                cachedMaps[optionName] = $scope.config[optionName];
+                cachedMaps[optionName] = $scope.config[optionName]; // [] -> [""]
                 cachedParsedMaps[optionName] = JSON.parse(cachedMaps[optionName]);
             }
         }
